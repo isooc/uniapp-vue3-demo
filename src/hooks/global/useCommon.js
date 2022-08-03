@@ -30,11 +30,11 @@ export const useCommonExample = () => {
     lists: []
   })
   // 读取.env 多坏境里的数据
-  state.VITE_APP_BASE_URL = import.meta.env.VITE_APP_BASE_URL as string
+  state.VITE_APP_BASE_URL = import.meta.env.VITE_APP_BASE_URL
   /* 获取时间点*/
   state.todayTime = momentMini().startOf('day').format('YYYY-MM-DD HH:mm:ss')
   state.currentTime = momentMini(new Date()).format('YYYY-MM-DD HH:mm:ss')
-  state.todayTimeLast = momentMini().endOf('day').format('YYYY-MM-DD HH:mm:ss') as string
+  state.todayTimeLast = momentMini().endOf('day').format('YYYY-MM-DD HH:mm:ss')
   state.beforeThreeDateTime = momentMini().add(-3, 'days').format('YYYY-MM-DD HH:mm:ss')
   state.yesterdayTime = momentMini().add(-1, 'days').format('YYYY-MM-DD HH:mm:ss')
 
@@ -107,7 +107,7 @@ export const useCommonExample = () => {
     console.log('showLoading', LoadingTitle)
     uni.showLoading({ title: `${LoadingTitle}`, mask: true })
   }
-  const wxShowToastSuccess = (title, duration?) => {
+  const wxShowToastSuccess = (title, duration) => {
     sleep(50).then(() => {
       uni.showToast({
         title: title,
@@ -116,7 +116,7 @@ export const useCommonExample = () => {
       })
     })
   }
-  const wxShowToastNone = (title, duration?) => {
+  const wxShowToastNone = (title, duration) => {
     sleep(50).then(() => {
       uni.showToast({
         title: title,

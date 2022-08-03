@@ -1,53 +1,85 @@
 <template>
   <view class="content">
-    <div>svg-icon 使用示例(只有在h5中能使用)</div>
+    <view>svg-icon 使用示例(只有在h5中能使用)</view>
     <svg-icon icon-class="dashboard" class="dashboard" />
     <view>vuex测试</view>
     <view @click="getterFunc">获取getter:{{ getterValue }}</view>
-    <div class="mt-2">commit</div>
+    <view class="mt-2">commit</view>
     <view @click="c_openVuexTest">c_openVuexTest</view>
     <view @click="c_closeVuexTest">c_closeVuexTest</view>
-    <div class="mt-2">action</div>
+    <view class="mt-2">action</view>
     <view @click="openVuexTest">openVuexTest</view>
     <view @click="closeVuexTest">closeVuexTest</view>
-    <div>test的store值：{{ getterValue }}</div>
-    <view @click="testReq">{{ appStore.test }}</view>
+    <view>test的store值：{{ store.state.app.test }}</view>
+    <view class="mt-4">请求测试</view>
+    <view @click="testReq">testReq</view>
+
+    <view class="mt-4">跳转测试  </view>
+    <view @click="toNavigateOne">navigateOne</view>
+    <view @click="toNavigateTwo">navigateTwo</view>
   </view>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { getCurrentInstance, ref } from 'vue'
 let title = ref('这是vue3版本')
+import { useStore } from 'vuex'
+const store = useStore()
+/*getter*/
 let getterValue = ref(null)
-import { useAppStore } from '@/store/app'
-const appStore = useAppStore()
 const getterFunc = () => {
-  getterValue.value = appStore.cachedViews
+  getterValue.value = store.getters.cachedViews
 }
+
 //request
 import uniRequest from '@/utils/uniRequest'
 const testReq = () => {
-  let reqConfig = {
+  uniRequest({
     url: '/integration-front/user/loginOut',
-    method: 'post'
-  }
-  uniRequest(reqConfig).then((res) => {})
+    method: 'post',
+    isSBLoading: true,
+    isHALoading: true,
+    data: {
+      test: 1
+    },
+    isParams: true
+  }).then((res) => {
+    console.log('我回来了')
+  })
 }
 
 /*mutations*/
 /*建议commit用M_开头 action用A_开头*/
 const c_openVuexTest = () => {
-  appStore.M_vuex_test(true)
+  store.commit('app/M_vuex_test', true)
 }
 const c_closeVuexTest = () => {
-  appStore.M_vuex_test(true)
+  store.commit('app/M_vuex_test', false)
 }
 /*actions*/
 const openVuexTest = () => {
-  appStore.A_vuex_test(true)
+  store.dispatch('app/A_vuex_test', true)
 }
 const closeVuexTest = () => {
-  appStore.A_vuex_test(false)
+  store.dispatch('app/A_vuex_test', false)
+}
+
+//navigate 跳转
+const { proxy } = getCurrentInstance()
+const toNavigateOne = () => {
+  let data = {
+    licenseNo: 11,
+    name: 'kuanghua'
+  }
+  proxy.toNavigatePageMixin('/pages/navigateOne/navigateOne', data)
+}
+
+const toNavigateTwo = () => {
+  let data = {
+    licenseNo: 222,
+    name: 'kuanghua'
+  }
+  proxy.toNavigatePageMixin('/pages/navigateTwo/navigateTwo', data)
 }
 </script>
 

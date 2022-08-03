@@ -4,6 +4,7 @@ export interface ImportMetaEnv {
   readonly VITE_APP_BASE_URL: string
   readonly VITE_APP_IMAGE_URL: string
   readonly VITE_APP_ENV: string
+  readonly VITE_APP_HOST: string
   // 更多环境变量...
 }
 

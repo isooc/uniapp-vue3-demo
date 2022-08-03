@@ -12,31 +12,44 @@
   </div>
 </template>
 
+<script>
+/*可以设置默认的名字*/
+import { mapState } from 'vuex'
+export default {
+  name: 'Login',
+  computed: {
+    ...mapState({
+      opened: (state) => state.app,
+      opened2: (state) => state.app
+    })
+  }
+}
+</script>
+
 <script setup>
 import { ref } from 'vue'
-import { useAppStore } from '@/store/app'
+import { useStore } from 'vuex'
+const store = useStore()
 /*getter*/
 let getterValue = ref(null)
-
-const appStore = useAppStore()
 const getterFunc = () => {
-  getterValue.value = appStore.cachedViews
+  getterValue.value = store.getters.cachedViews
 }
 
 /*mutations*/
 /*建议commit用M_开头 action用A_开头*/
 const c_openSideBar = () => {
-  appStore.M_vuex_test(true)
+  store.commit('app/M_vuex_test', true)
 }
 const c_closeSideBar = () => {
-  appStore.M_vuex_test(false)
+  store.commit('app/M_vuex_test', false)
 }
 /*actions*/
 const openSideBar = () => {
-  appStore.M_vuex_test(true)
+  store.dispatch('app/A_vuex_test', true)
 }
 const closeSideBar = () => {
-  appStore.M_vuex_test(false)
+  store.dispatch('app/A_vuex_test', false)
 }
 </script>
 

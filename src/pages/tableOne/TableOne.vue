@@ -10,29 +10,29 @@
     <view class="mt-2">action</view>
     <view @click="openVuexTest">openVuexTest</view>
     <view @click="closeVuexTest">closeVuexTest</view>
-    <view>test的store值：{{ appStore.test }}</view>
-
+    <view>test的store值：{{ store.state.app.test }}</view>
     <view class="mt-4">请求测试</view>
     <view @click="testReq">testReq</view>
 
-    <view class="mt-4">跳转测试</view>
+    <view class="mt-4">跳转测试  </view>
     <view @click="toNavigateOne">navigateOne</view>
     <view @click="toNavigateTwo">navigateTwo</view>
   </view>
 </template>
 
 <script setup>
-import { useAppStore } from '@/store/app'
-
+import { getCurrentInstance, ref } from 'vue'
 let title = ref('这是vue3版本')
-const appStore = useAppStore()
+import { useStore } from 'vuex'
+const store = useStore()
 /*getter*/
 let getterValue = ref(null)
 const getterFunc = () => {
-  getterValue.value = appStore.cachedViews
+  getterValue.value = store.getters.cachedViews
 }
 
 //request
+import uniRequest from '@/utils/uniRequest'
 const testReq = () => {
   uniRequest({
     url: '/integration-front/user/loginOut',
@@ -51,20 +51,20 @@ const testReq = () => {
 /*mutations*/
 /*建议commit用M_开头 action用A_开头*/
 const c_openVuexTest = () => {
-  appStore.M_vuex_test(true)
+  store.commit('app/M_vuex_test', true)
 }
 const c_closeVuexTest = () => {
-  appStore.M_vuex_test(false)
+  store.commit('app/M_vuex_test', false)
 }
 /*actions*/
 const openVuexTest = () => {
-  appStore.A_vuex_test(true)
+  store.dispatch('app/A_vuex_test', true)
 }
 const closeVuexTest = () => {
-  appStore.A_vuex_test(false)
+  store.dispatch('app/A_vuex_test', false)
 }
 
-//navigate
+//navigate 跳转
 const common = useCommon()
 const toNavigateOne = () => {
   let data = {
